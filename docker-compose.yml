@@ -1,0 +1,26 @@
+version: "3.2"
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=egeya
+      - MYSQL_DATABASE=egeya
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  egeya:
+    build: .
+    # image: mprokopov/egeya:latest
+    env_file:
+      - .env
+    # environment:
+    #   - VERSION=3565
+    #   - VIRTUAL_HOST=docker.loc
+    links:
+      - db
+    ports:
+      - 80:80
+    volumes:
+      - ./data/themes:/var/www/html/themes
+      - ./data/pictures:/var/www/html/pictures
+      - ./data/user:/var/www/html/user
