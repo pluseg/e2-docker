@@ -1,26 +1,32 @@
-version: "3.2"
+version: "3.3"
 services:
   db:
     image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=egeya
       - MYSQL_DATABASE=egeya
+    ports:
+      - "3306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
 
   egeya:
-    build: .
-    # image: mprokopov/egeya:latest
-    env_file:
-      - .env
-    # environment:
-    #   - VERSION=3565
-    #   - VIRTUAL_HOST=docker.loc
-    links:
+    build:
+      context: .
+      args:
+        VERSION: ${VERSION}
+    depends_on:
       - db
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
     ports:
       - 80:80
     volumes:
-      - ./data/themes:/var/www/html/themes
+      - ./data/theme:/var/www/html/themes/mytheme
       - ./data/pictures:/var/www/html/pictures
       - ./data/user:/var/www/html/user
+
+networks:
+  default:

@@ -1,0 +1,9 @@
+.env
+data/mysql
+data/pictures
+data/user/logs
+data/user/backup
+data/user/caches
+data/user/*.psa
+data/user/settings.json
+!data/mysql/.gitkeep
